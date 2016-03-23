@@ -19,3 +19,12 @@ instance ToJSON Matrix
 mtx :: B.ByteString
 mtx = "{\"matrix\": [[1,2,3],[4,5,6],[7,8,9]]}" 
 
+
+data Error = Error { error :: String }
+             deriving (Show, Generic)
+
+instance FromJSON Error
+instance ToJSON Error
+
+err :: B.ByteString
+err = "{\"error\": \"This is da biggest error eva!\"}"
