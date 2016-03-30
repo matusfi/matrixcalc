@@ -1,11 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Lib (Matrix, Error)
-import Network.HTTP.Conduit
+import Lib (Matrix, Error, mtx)
+import Network.Wreq
+import Network.Wreq.Types (Postable)
+import Control.Lens
 import System.Environment (getArgs)
 import qualified Data.ByteString.Lazy as L
-import Control.Monad.IO.Class (liftIO)
 
 main :: IO ()
 main = do
@@ -14,7 +15,11 @@ main = do
     [urlString] -> runTests urlString
     _           -> error "Please enter only one URL"
 
+url :: String
+url = "http://matrixcalc.demecko.com/api/add/1-1/2-2"
+
+getWithPayload :: Postable a => String -> a -> IO (Response L.ByteString)
+getWithPayload = customPayloadMethod "GET"
+
 runTests :: String -> IO ()
-runTests urlString = case parseUrl urlString of
-                       Nothing  -> error "Invalid URL"
-                       Just req -> putStrLn "Yeeehaa!"
+runTests urlString = putStrLn urlString
