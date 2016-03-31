@@ -5,7 +5,8 @@ module Lib where
 
 import GHC.Generics
 import Data.List
-import Data.Aeson
+import Data.Text
+import Data.Aeson (FromJSON, ToJSON)
 import Data.ByteString.Lazy.Char8
 import qualified Data.ByteString.Lazy as L
 
@@ -16,11 +17,18 @@ data Matrix = Matrix {
 instance FromJSON Matrix
 instance ToJSON Matrix
 
-mtx :: L.ByteString
-mtx = "{\"matrix\": [[1,2,3],[4,5,6],[7,8,9]]}" 
+lbsMtx :: L.ByteString
+lbsMtx = "{\"matrix\": [[1,2,3],[4,5,6],[7,8,9]]}" 
 
+mtx = Matrix [[1,2,3],[4,5,6],[7,8,9]]
 
-data Error = Error { error :: String }
+data Result = Result { result :: Int }
+              deriving (Show, Generic)
+
+instance FromJSON Result
+instance ToJSON Result
+
+data Error = Error { error :: Text }
              deriving (Show, Generic)
 
 instance FromJSON Error
